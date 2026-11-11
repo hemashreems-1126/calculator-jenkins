@@ -13,14 +13,14 @@ pipeline {
         stage('Static Verification') {
             steps {
                 echo 'Checking Maven project...'
-                bat 'mvn validate'
+                bat '"C:/Apache/apache-maven-3.10.0/bin/mvn.cmd" validate'
             }
         }
 
         stage('Compilation & Automated Testing') {
             steps {
                 echo 'Compiling and testing...'
-                bat 'mvn clean package'
+                bat '"C:/Apache/apache-maven-3.10.0/bin/mvn.cmd" clean package'
             }
             post {
                 always {
