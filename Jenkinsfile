@@ -13,15 +13,13 @@ pipeline {
         stage('Static Verification') {
             steps {
                 echo 'Checking Maven project...'
-                bat '"C:/Apache/apache-maven-3.10.0/bin/mvn.cmd" validate'
-            }
+bat '"C:/Users/HEMASHREE M S/Downloads/maven-mvnd-1.0.6-windows-amd64/maven-mvnd-1.0.6-windows-amd64/bin/mvnd.cmd" validate'            }
         }
 
         stage('Compilation & Automated Testing') {
             steps {
                 echo 'Compiling and testing...'
-                bat '"C:/Apache/apache-maven-3.10.0/bin/mvn.cmd" clean package'
-            }
+bat '"C:/Users/HEMASHREE M S/Downloads/maven-mvnd-1.0.6-windows-amd64/maven-mvnd-1.0.6-windows-amd64/bin/mvnd.cmd" clean package'            }
             post {
                 always {
                     junit '**/target/surefire-reports/*.xml'
