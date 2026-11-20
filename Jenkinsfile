@@ -1,28 +1,48 @@
-
 pipeline {
     agent any
+    
+    
+    // Use tools Name configured in Jenkins
+    tools {
+        jdk 'JDK 25'
+        maven 'Maven-3.10'
+    }
+
 
     stages {
         stage('SCM Synchronization') {
             steps {
-                echo 'Pulling latest code from GitHub...'
+                echo '📥 Pulling latest code changes from Git repository...'
                 checkout scm
             }
         }
 
         stage('Static Verification') {
             steps {
-                echo 'Checking Maven project...'
-bat '"C:/Users/HEMASHREE M S/Downloads/maven-mvnd-1.0.6-windows-amd64/maven-mvnd-1.0.6-windows-amd64/bin/mvnd.cmd" validate'            }
+                echo '🔍 Checking Maven project layout rules...'
+                bat 'mvn validate'
+            }
         }
 
         stage('Compilation & Automated Testing') {
             steps {
-                echo 'Compiling and testing...'
-bat '"C:/Users/HEMASHREE M S/Downloads/maven-mvnd-1.0.6-windows-amd64/maven-mvnd-1.0.6-windows-amd64/bin/mvnd.cmd" clean package'            }
+                echo '⚙️ Compiling class layers and verifying test logic stability...'
+                bat 'mvn clean package'
+            }
             post {
                 always {
+                    echo '📊 Publishing Unit Test trends to Jenkins Dashboard...'
                     junit '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+  
+
+    stage('SonarQube Analysis') {
+            steps {
+                echo 'Starting SonarQube analysis'
+                withSonarQubeEnv('SonarQube-Local') {
+                    bat 'mvn sonar:sonar'
                 }
             }
         }
@@ -30,10 +50,11 @@ bat '"C:/Users/HEMASHREE M S/Downloads/maven-mvnd-1.0.6-windows-amd64/maven-mvnd
 
     post {
         success {
-            echo 'CI Pipeline completed successfully!'
+            echo 'Build and SonarQube analysis completed!'
         }
         failure {
-            echo 'CI Pipeline failed. Check Console Output.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
+
 }
